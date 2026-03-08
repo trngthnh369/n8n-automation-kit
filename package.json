@@ -1,0 +1,47 @@
+{
+  "name": "n8n-automation-kit",
+  "version": "1.0.0",
+  "description": "Comprehensive 4-tier skill kit for fully automated n8n workflow building. 22 skills, 13 domains. Agent-agnostic, portable, shareable.",
+  "main": "kit.json",
+  "scripts": {
+    "postinstall": "echo 'n8n-automation-kit installed! Entry point: _moc.md'"
+  },
+  "keywords": [
+    "n8n",
+    "automation",
+    "workflow",
+    "ai-agent",
+    "skill-kit",
+    "antigravity",
+    "claude-code",
+    "gemini-cli",
+    "cursor",
+    "mcp",
+    "facebook-ads",
+    "ecommerce",
+    "crm",
+    "devops"
+  ],
+  "author": "KhoaHRV",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khoahrv/n8n-automation-kit"
+  },
+  "homepage": "https://github.com/khoahrv/n8n-automation-kit#readme",
+  "bugs": {
+    "url": "https://github.com/khoahrv/n8n-automation-kit/issues"
+  },
+  "files": [
+    "_moc.md",
+    "_registry.yaml",
+    "kit.json",
+    "tier-1-orchestrators/",
+    "tier-2-hubs/",
+    "tier-3-utilities/",
+    "tier-4-domains/",
+    "setup/",
+    "README.md",
+    "LICENSE"
+  ]
+}

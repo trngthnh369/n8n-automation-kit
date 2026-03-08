@@ -1,0 +1,236 @@
+# n8n Automation Kit — Skills Registry
+# This file provides quick metadata lookup for all skills without reading full SKILL.md files.
+
+version: "1.0.0"
+
+skills:
+  # --- Tier 1: Orchestrators ---
+  orchestrator:
+    tier: 1
+    category: orchestrator
+    path: tier-1-orchestrators/orchestrator/SKILL.md
+    description: Routes user requests to workflow hubs. Manages end-to-end PRD-to-Workflow pipeline.
+    triggers:
+      [
+        "build workflow",
+        "create automation",
+        "automate",
+        "n8n workflow",
+        "PRD to workflow",
+      ]
+    auto_load: true
+
+  # --- Tier 2: Hubs ---
+  architect:
+    tier: 2
+    category: hub
+    path: tier-2-hubs/architect/SKILL.md
+    description: Analyzes requirements and designs SSOT architecture. Splits workflows into orchestrator + sub-workers.
+    triggers:
+      [
+        "design workflow",
+        "architecture",
+        "SSOT",
+        "split modules",
+        "plan workflow",
+      ]
+    requires: [orchestrator]
+    related: [builder, template-library]
+
+  builder:
+    tier: 2
+    category: hub
+    path: tier-2-hubs/builder/SKILL.md
+    description: Constructs n8n workflow JSON (nodes, connections, settings). Applies Builder v5 standards.
+    triggers: ["build nodes", "create JSON", "construct workflow", "add node"]
+    requires: [n8n-mcp]
+    related: [architect, debugger, credential-manager]
+
+  debugger:
+    tier: 2
+    category: hub
+    path: tier-2-hubs/debugger/SKILL.md
+    description: Executes workflows, analyzes execution data, identifies root causes, routes fixes.
+    triggers:
+      ["debug workflow", "fix error", "workflow failed", "execution error"]
+    requires: [n8n-mcp]
+    related: [builder, deployer]
+
+  deployer:
+    tier: 2
+    category: hub
+    path: tier-2-hubs/deployer/SKILL.md
+    description: Deploys, activates, tags, and finalizes workflows. Handles production safety.
+    triggers: ["deploy workflow", "activate", "go live", "publish workflow"]
+    requires: [n8n-mcp]
+    related: [debugger, builder]
+
+  # --- Tier 3: Utilities ---
+  n8n-mcp:
+    tier: 3
+    category: utility
+    path: tier-3-utilities/n8n-mcp/SKILL.md
+    description: 24 MCP tools for n8n workflow CRUD, execution, debugging, templates, credentials, tags.
+    triggers: ["MCP tool", "n8n API", "list workflows", "execute workflow"]
+    auto_load: false
+
+  google-workspace:
+    tier: 3
+    category: utility
+    path: tier-3-utilities/google-workspace/SKILL.md
+    description: Google Workspace CLI (gws) integration for Docs, Sheets, Calendar, Drive, Gmail.
+    triggers:
+      [
+        "google docs",
+        "google sheets",
+        "read spreadsheet",
+        "google calendar",
+        "gws",
+      ]
+    requires: []
+    related: [google-sheets]
+
+  credential-manager:
+    tier: 3
+    category: utility
+    path: tier-3-utilities/credential-manager/SKILL.md
+    description: Credential lifecycle management. Discovers, creates, and maps credentials to nodes.
+    triggers: ["credential", "authentication", "API key", "OAuth"]
+    requires: [n8n-mcp]
+
+  template-library:
+    tier: 3
+    category: utility
+    path: tier-3-utilities/template-library/SKILL.md
+    description: Community template search, evaluation, and adaptation. Maintains local pattern library.
+    triggers: ["template", "example workflow", "reference", "find template"]
+    requires: [n8n-mcp]
+
+  # --- Tier 4: Domains ---
+  facebook-ads:
+    tier: 4
+    category: domain
+    path: tier-4-domains/facebook-ads/SKILL.md
+    description: Facebook Ads automation patterns - cascade pause, adaptive branching, API resilience.
+    triggers: ["facebook ads", "fb ads", "campaign", "ad set", "META API"]
+    requires: [builder]
+
+  inventory:
+    tier: 4
+    category: domain
+    path: tier-4-domains/inventory/SKILL.md
+    description: Ecommerce inventory automation - batch processing, marketplace APIs, scatter-gather.
+    triggers:
+      [
+        "inventory",
+        "ecommerce",
+        "shopee",
+        "lazada",
+        "tiktok shop",
+        "haravan",
+        "product scan",
+      ]
+    requires: [builder]
+
+  content-gen:
+    tier: 4
+    category: domain
+    path: tier-4-domains/content-gen/SKILL.md
+    description: AI content generation pipelines - articles, media, product reviews.
+    triggers:
+      [
+        "content generation",
+        "SEO article",
+        "AI content",
+        "media generation",
+        "TVC",
+      ]
+    requires: [builder]
+
+  kpi-automation:
+    tier: 4
+    category: domain
+    path: tier-4-domains/kpi-automation/SKILL.md
+    description: KPI scoring and management automation - Base Goal API, merge barrier, SSOT strategy.
+    triggers:
+      ["KPI", "goal scoring", "performance review", "employee evaluation"]
+    requires: [builder]
+
+  google-sheets:
+    tier: 4
+    category: domain
+    path: tier-4-domains/google-sheets/SKILL.md
+    description: Advanced Google Sheets patterns - GID handling, pivot operations, batch updates.
+    triggers: ["google sheets", "spreadsheet", "GID", "sheet operations"]
+    requires: [builder, n8n-mcp]
+
+  crm-sales:
+    tier: 4
+    category: domain
+    path: tier-4-domains/crm-sales/SKILL.md
+    description: CRM & Sales automation - lead capture, nurture, pipeline management.
+    triggers: ["CRM", "sales", "lead", "customer", "pipeline", "HubSpot", "deal"]
+    requires: [builder]
+    related: [messaging]
+
+  messaging:
+    tier: 4
+    category: domain
+    path: tier-4-domains/messaging/SKILL.md
+    description: Multi-channel messaging - Zalo OA, Telegram, Slack, Email, chatbot, broadcast.
+    triggers: ["Zalo", "Telegram", "Slack", "email", "SMS", "notification", "chatbot", "broadcast"]
+    requires: [builder]
+    related: [crm-sales, customer-support]
+
+  data-pipeline:
+    tier: 4
+    category: domain
+    path: tier-4-domains/data-pipeline/SKILL.md
+    description: Data pipeline & ETL - multi-source ingestion, transformation, cross-system sync.
+    triggers: ["data pipeline", "ETL", "data sync", "import", "export", "database", "CSV"]
+    requires: [builder]
+
+  order-fulfillment:
+    tier: 4
+    category: domain
+    path: tier-4-domains/order-fulfillment/SKILL.md
+    description: Order & fulfillment - multi-channel order sync, shipping, invoicing, inventory update.
+    triggers: ["order", "fulfillment", "shipping", "invoice", "KiotViet", "Sapo", "đơn hàng"]
+    requires: [builder]
+    related: [inventory, messaging]
+
+  social-media:
+    tier: 4
+    category: domain
+    path: tier-4-domains/social-media/SKILL.md
+    description: Social media management - auto-posting, engagement monitoring, analytics.
+    triggers: ["social media", "facebook post", "instagram", "TikTok", "auto post", "engagement"]
+    requires: [builder]
+    related: [content-gen, facebook-ads]
+
+  finance:
+    tier: 4
+    category: domain
+    path: tier-4-domains/finance/SKILL.md
+    description: Finance & accounting - reconciliation, invoicing, expense tracking, P&L reports.
+    triggers: ["finance", "accounting", "invoice", "revenue", "expense", "reconciliation", "hóa đơn"]
+    requires: [builder]
+    related: [order-fulfillment, data-pipeline]
+
+  it-ops:
+    tier: 4
+    category: domain
+    path: tier-4-domains/it-ops/SKILL.md
+    description: IT operations - monitoring, alerting, CI/CD triggers, backup verification.
+    triggers: ["server", "monitoring", "CI/CD", "DevOps", "backup", "uptime", "incident"]
+    requires: [builder]
+    related: [messaging]
+
+  customer-support:
+    tier: 4
+    category: domain
+    path: tier-4-domains/customer-support/SKILL.md
+    description: Customer support - ticket routing, AI draft responses, SLA tracking, escalation.
+    triggers: ["support", "ticket", "helpdesk", "customer service", "complaint", "hỗ trợ"]
+    requires: [builder]
+    related: [messaging, crm-sales]

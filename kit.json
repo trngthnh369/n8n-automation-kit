@@ -1,0 +1,57 @@
+{
+  "name": "n8n-automation-kit",
+  "version": "1.0.0",
+  "description": "Comprehensive 4-tier skill kit for fully automated n8n workflow building. Agent-agnostic, portable, and shareable.",
+  "author": "KhoaHRV",
+  "license": "MIT",
+  "repository": "https://github.com/khoahrv/n8n-automation-kit",
+  "engines": {
+    "agents": ["antigravity", "claude-code", "gemini-cli", "cursor"]
+  },
+  "mcp_dependencies": {
+    "required": ["n8n-custom-mcp"],
+    "optional": ["@googleworkspace/cli"]
+  },
+  "entry_point": "_moc.md",
+  "tiers": {
+    "1-orchestrators": {
+      "description": "Task routing & intent detection. Auto-loaded on every session.",
+      "auto_load": true,
+      "skills": ["orchestrator"]
+    },
+    "2-hubs": {
+      "description": "Core workflow lifecycle hubs. Loaded on demand by orchestrator.",
+      "auto_load": false,
+      "skills": ["architect", "builder", "debugger", "deployer"]
+    },
+    "3-utilities": {
+      "description": "Technical utilities and integrations. Loaded by hubs as needed.",
+      "auto_load": false,
+      "skills": [
+        "n8n-mcp",
+        "google-workspace",
+        "credential-manager",
+        "template-library"
+      ]
+    },
+    "4-domains": {
+      "description": "Domain-specific patterns. Loaded when project type is detected.",
+      "auto_load": false,
+      "skills": [
+        "facebook-ads",
+        "inventory",
+        "content-gen",
+        "kpi-automation",
+        "google-sheets",
+        "crm-sales",
+        "messaging",
+        "data-pipeline",
+        "order-fulfillment",
+        "social-media",
+        "finance",
+        "it-ops",
+        "customer-support"
+      ]
+    }
+  }
+}
