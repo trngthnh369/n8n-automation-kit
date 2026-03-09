@@ -20,7 +20,7 @@ Build, deploy, debug, and fix n8n workflows **autonomously** using AI agents. Su
 ### Antigravity / Gemini CLI
 
 ```bash
-git clone https://github.com/khoahrv/n8n-automation-kit.git
+git clone https://github.com/trngthnh369/n8n-automation-kit.git
 cd n8n-automation-kit
 # Windows
 .\setup\install.ps1 -Agent antigravity
@@ -31,7 +31,7 @@ cd n8n-automation-kit
 ### Claude Code
 
 ```bash
-git clone https://github.com/khoahrv/n8n-automation-kit.git
+git clone https://github.com/trngthnh369/n8n-automation-kit.git
 cd n8n-automation-kit
 .\setup\install.ps1 -Agent claude
 ```

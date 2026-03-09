@@ -2,9 +2,9 @@
   "name": "n8n-automation-kit",
   "version": "1.0.0",
   "description": "Comprehensive 4-tier skill kit for fully automated n8n workflow building. Agent-agnostic, portable, and shareable.",
-  "author": "KhoaHRV",
+  "author": "Turti",
   "license": "MIT",
-  "repository": "https://github.com/khoahrv/n8n-automation-kit",
+  "repository": "https://github.com/trngthnh369/n8n-automation-kit",
   "engines": {
     "agents": ["antigravity", "claude-code", "gemini-cli", "cursor"]
   },

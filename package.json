@@ -22,15 +22,15 @@
     "crm",
     "devops"
   ],
-  "author": "KhoaHRV",
+  "author": "Turti",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/khoahrv/n8n-automation-kit"
+    "url": "https://github.com/trngthnh369/n8n-automation-kit"
   },
-  "homepage": "https://github.com/khoahrv/n8n-automation-kit#readme",
+  "homepage": "https://github.com/trngthnh369/n8n-automation-kit#readme",
   "bugs": {
-    "url": "https://github.com/khoahrv/n8n-automation-kit/issues"
+    "url": "https://github.com/trngthnh369/n8n-automation-kit/issues"
   },
   "files": [
     "_moc.md",
