@@ -1,6 +1,6 @@
 {
   "name": "n8n-automation-kit",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Comprehensive 4-tier skill kit for fully automated n8n workflow building. 22 skills, 13 domains. Agent-agnostic, portable, shareable.",
   "main": "kit.json",
   "scripts": {
