@@ -26,6 +26,25 @@ related:
 
 The brain of the n8n Automation Kit. Routes every user request to the correct skill hub and manages the end-to-end automation pipeline.
 
+## ⛔ MCP-FIRST MANDATE (đọc trước khi làm bất cứ gì)
+
+> **LUÔN LUÔN dùng n8n MCP tools** (`create_workflow`, `execute_workflow`, `update_workflow`, `get_execution_data`, v.v.) — đây là các tool có sẵn trong tool list của Agent.
+>
+> **TUYỆT ĐỐI KHÔNG viết custom code** (JavaScript, Python, hoặc bất kỳ script nào) gọi n8n REST API trực tiếp bằng `fetch()`, `axios`, `httpx`, hoặc `curl`.
+>
+> **Lý do**: MCP tools:
+>
+> - Đã xử lý auth, error handling, và rate limiting
+> - Hỗ trợ `execute_workflow` (n8n Public API KHÔNG có endpoint này)
+> - Cho phép Self-Healing Loop hoạt động (execute → check → fix → retry)
+> - Agent KHÔNG CẦN biết n8n URL hay API key
+
+### Checklist trước khi bắt đầu
+
+- [ ] ✅ Xác nhận MCP tools available trong tool list (search: `create_workflow`, `list_workflows`)
+- [ ] ❌ Nếu KHÔNG thấy MCP tools → BÁO USER rằng cần cấu hình n8n-custom-mcp server
+- [ ] ❌ KHÔNG BAO GIỜ tự viết code gọi API thay thế MCP tools
+
 ## Intent Detection & Routing
 
 When a user request arrives, classify intent and route:

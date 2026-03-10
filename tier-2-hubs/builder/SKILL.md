@@ -24,6 +24,10 @@ related:
 
 Constructs production-ready n8n workflow JSON from the `[[architect]]`'s SSOT design. Applies Builder v5 standards.
 
+> ⛔ **MCP-FIRST**: Sau khi xây dựng workflow JSON, **PHẢI dùng `create_workflow()` hoặc `update_workflow()`** từ MCP tools để deploy.
+> **KHÔNG BAO GIỜ** viết script JS/Python gọi `fetch()` / `axios` tới n8n API.
+> Nếu cần kiểm tra node type → dùng `get_node_type_details()`. Nếu cần xem workflow hiện có → dùng `get_workflow()`.
+
 ## Node JSON Structure
 
 Every node requires this structure:

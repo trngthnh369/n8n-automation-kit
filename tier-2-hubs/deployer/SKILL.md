@@ -20,6 +20,10 @@ related:
 
 Handles deployment lifecycle: create, activate, tag, and production safety.
 
+> ⛔ **MCP-FIRST**: Tất cả operations deploy **PHẢI** qua MCP tools:
+> `create_workflow()`, `activate_workflow()`, `tag_workflow()`, `duplicate_workflow()`.
+> **KHÔNG BAO GIỜ** viết script gọi n8n REST API trực tiếp. Nếu MCP tools không available → BÁO USER.
+
 ## Deployment Protocol
 
 ```
