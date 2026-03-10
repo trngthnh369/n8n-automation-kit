@@ -22,9 +22,9 @@ related:
 
 End-to-end Self-Healing Loop: execute, analyze execution logs, classify errors, route fixes to `[[builder]]`, and re-verify automatically.
 
-> ⛔ **MCP-FIRST**: Debug loop **PHẢI** dùng MCP tools:
-> `execute_workflow()`, `list_executions()`, `get_execution_data()`, `get_workflow()`, `update_workflow()`.
-> **KHÔNG BAO GIỜ** viết script gọi n8n API trực tiếp hoặc dùng `curl`/`fetch()` để test workflow.
+> ⚡ **MCP-FIRST**: Ưu tiên MCP tools: `execute_workflow()`, `list_executions()`, `get_execution_data()`, `get_workflow()`, `update_workflow()`.
+> **Fallback**: Nếu MCP không available → dùng `GET /api/v1/executions` + `PATCH /api/v1/workflows/:id`.
+> ⚠️ Fallback mode: **không có `execute_workflow`** → chỉ deploy + check logs thủ công, không có Self-Healing Loop tự động.
 
 ## ⭐ Self-Healing Loop Protocol
 

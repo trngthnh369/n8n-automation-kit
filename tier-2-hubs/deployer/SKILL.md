@@ -20,9 +20,9 @@ related:
 
 Handles deployment lifecycle: create, activate, tag, and production safety.
 
-> ⛔ **MCP-FIRST**: Tất cả operations deploy **PHẢI** qua MCP tools:
-> `create_workflow()`, `activate_workflow()`, `tag_workflow()`, `duplicate_workflow()`.
-> **KHÔNG BAO GIỜ** viết script gọi n8n REST API trực tiếp. Nếu MCP tools không available → BÁO USER.
+> ⚡ **MCP-FIRST**: Ưu tiên MCP tools: `create_workflow()`, `activate_workflow()`, `tag_workflow()`, `duplicate_workflow()`.
+> **Fallback**: Nếu MCP không available → gọi n8n REST API trực tiếp (`POST /api/v1/workflows`, `PATCH /api/v1/workflows/:id`).
+> ⚠️ Fallback mode không hỗ trợ `execute_workflow` — chỉ deploy được, không tự test.
 
 ## Deployment Protocol
 
