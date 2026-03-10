@@ -99,12 +99,14 @@ When deploying a system with sub-workflows:
 
 ## Runner Workflow Dependency
 
-The `execute_workflow` tool depends on the **Runner Workflow** (ID: `yl69fJwZ0BASjDmB`).
+The `execute_workflow` tool depends on a **Runner Workflow** deployed on your n8n instance.
+
+> Runner Workflow ID is configured during MCP setup. See `setup/SETUP-MCP.md` for details.
 
 If `execute_workflow` returns **404**:
 
 ```
-activate_workflow("yl69fJwZ0BASjDmB", active: true)
+activate_workflow("<RUNNER_WORKFLOW_ID>", active: true)
 → Wait 2 seconds
 → Retry execute_workflow
 ```
