@@ -2,8 +2,8 @@
 name: google-workspace
 tier: 3
 category: utility
-version: 1.0.0
-description: Google Workspace CLI (gws) integration for reading/writing Docs, Sheets, Calendar, Drive, Gmail.
+version: 2.0.0
+description: Google Sheets node patterns — Service Account setup, tạo tab, tạo headers, read/write/append. Gmail, Drive, Calendar.
 triggers:
   - "google docs"
   - "google sheets"
@@ -11,129 +11,216 @@ triggers:
   - "google calendar"
   - "gws"
   - "read PRD"
+  - "service account"
 requires: []
 related:
-  - "[[google-sheets]]"
+  - "[[credential-manager]]"
   - "[[orchestrator]]"
 ---
 
-# 📊 Google Workspace CLI Integration
+# 📊 Google Workspace for n8n
 
-Use the `gws` CLI to interact with Google Workspace services from AI agents.
+Patterns cho Google Sheets, Gmail, Drive, Calendar **trong n8n workflows**.
 
-## Installation
+## ⭐ Google Sheets + Service Account (Quan trọng nhất)
 
-```bash
-npm install -g @googleworkspace/cli
-```
+### Setup Service Account trên n8n
 
-## Authentication
+1. Google Cloud Console → tạo Service Account → download JSON key
+2. n8n → Credentials → Add → Google API (Service Account)
+3. Upload JSON key file
+4. **Share spreadsheet** với email service account (editor)
+5. Credential type in n8n: `googleApi`
 
-```bash
-# First-time setup
-gws auth login
-
-# Service account (server/CI)
-gws auth login --service-account /path/to/key.json
-```
-
-## Key Services
-
-### Gmail
-
-```bash
-# List messages
-gws gmail messages list --max-results 10 --format json
-
-# Read message
-gws gmail messages get --id <messageId> --format json
-
-# Send message
-gws gmail messages send --to "user@example.com" --subject "Subject" --body "Body"
-```
-
-### Google Drive
-
-```bash
-# List files
-gws drive files list --query "name contains 'PRD'" --format json
-
-# Download file
-gws drive files get --file-id <fileId> --format json
-
-# Upload file
-gws drive files create --name "report.pdf" --parent <folderId> --file /path/to/file
-```
-
-### Google Docs
-
-```bash
-# Read document content
-gws docs documents get --document-id <docId> --format json
-
-# Update document
-gws docs documents batchUpdate --document-id <docId> --requests '[...]'
-```
-
-### Google Sheets
-
-```bash
-# Read range
-gws sheets spreadsheets.values get --spreadsheet-id <id> --range "Sheet1!A1:Z100" --format json
-
-# Write range
-gws sheets spreadsheets.values update --spreadsheet-id <id> --range "Sheet1!A1" --values '[["a","b"],["c","d"]]'
-
-# Append rows
-gws sheets spreadsheets.values append --spreadsheet-id <id> --range "Sheet1!A1" --values '[["new","row"]]'
-```
-
-### Google Calendar
-
-```bash
-# List events
-gws calendar events list --calendar-id primary --time-min "2025-01-01T00:00:00Z" --format json
-
-# Create event
-gws calendar events insert --calendar-id primary --summary "Deploy workflow" --start "2025-01-15T09:00:00+07:00" --end "2025-01-15T10:00:00+07:00"
-```
-
-## Usage in n8n Automation Kit
-
-### Reading PRD for Workflow Design
-
-```
-1. User provides Google Docs link
-2. gws docs documents get --document-id <id> → extract content
-3. Parse requirements → pass to [[architect]]
-```
-
-### Writing Deployment Reports
-
-```
-1. After [[deployer]] completes deployment
-2. gws sheets spreadsheets.values append → add row with:
-   - Workflow ID, name, status, nodes count, timestamp
-```
-
-### Scheduling Workflow Reviews
-
-```
-1. After successful deployment
-2. gws calendar events insert → create review event
-```
-
-## MCP Integration
-
-`gws` supports MCP protocol natively. If configured as an MCP server, tools are available directly to agents without CLI calls.
+### Tạo Tab mới (Add Sheet)
 
 ```json
 {
-  "mcpServers": {
-    "google-workspace": {
-      "command": "gws",
-      "args": ["mcp", "serve"]
+  "type": "n8n-nodes-base.googleSheets",
+  "typeVersion": 4.5,
+  "name": "Create Log Tab",
+  "position": [500, 300],
+  "parameters": {
+    "operation": "create",
+    "documentId": {
+      "mode": "id",
+      "value": "={{ $json.spreadsheetId }}"
+    },
+    "sheetName": "={{ $json.tabName || 'Logs' }}"
+  },
+  "credentials": {
+    "googleSheetsOAuth2Api": {
+      "id": "<CREDENTIAL_ID>",
+      "name": "<CREDENTIAL_NAME>"
     }
   }
 }
+```
+
+### Tạo Headers (Write Row 1)
+
+```json
+{
+  "type": "n8n-nodes-base.googleSheets",
+  "typeVersion": 4.5,
+  "name": "Write Headers",
+  "position": [850, 300],
+  "parameters": {
+    "operation": "update",
+    "documentId": {
+      "mode": "id",
+      "value": "={{ $json.spreadsheetId }}"
+    },
+    "sheetName": {
+      "mode": "name",
+      "value": "Logs"
+    },
+    "columns": {
+      "mappingMode": "defineBelow",
+      "value": {
+        "timestamp": "Timestamp",
+        "action": "Action",
+        "status": "Status",
+        "details": "Details",
+        "error": "Error"
+      }
+    },
+    "options": {
+      "cellFormat": "USER_ENTERED"
+    }
+  },
+  "credentials": {
+    "googleSheetsOAuth2Api": {
+      "id": "<CREDENTIAL_ID>",
+      "name": "<CREDENTIAL_NAME>"
+    }
+  }
+}
+```
+
+### Append Data (Thêm dòng)
+
+```json
+{
+  "type": "n8n-nodes-base.googleSheets",
+  "typeVersion": 4.5,
+  "name": "Log to Sheet",
+  "position": [1200, 300],
+  "parameters": {
+    "operation": "append",
+    "documentId": {
+      "mode": "id",
+      "value": "SPREADSHEET_ID"
+    },
+    "sheetName": {
+      "mode": "name",
+      "value": "Logs"
+    },
+    "columns": {
+      "mappingMode": "autoMapInputData",
+      "matchingColumns": []
+    },
+    "options": {
+      "cellFormat": "USER_ENTERED"
+    }
+  },
+  "credentials": {
+    "googleSheetsOAuth2Api": {
+      "id": "<CREDENTIAL_ID>",
+      "name": "<CREDENTIAL_NAME>"
+    }
+  }
+}
+```
+
+### Read Data
+
+```json
+{
+  "type": "n8n-nodes-base.googleSheets",
+  "typeVersion": 4.5,
+  "name": "Read Config",
+  "position": [500, 300],
+  "parameters": {
+    "operation": "read",
+    "documentId": {
+      "mode": "id",
+      "value": "SPREADSHEET_ID"
+    },
+    "sheetName": {
+      "mode": "name",
+      "value": "Config"
+    },
+    "options": {}
+  },
+  "credentials": {
+    "googleSheetsOAuth2Api": {
+      "id": "<CREDENTIAL_ID>",
+      "name": "<CREDENTIAL_NAME>"
+    }
+  }
+}
+```
+
+## Gmail Node
+
+```json
+{
+  "type": "n8n-nodes-base.gmail",
+  "typeVersion": 2.1,
+  "name": "Send Report Email",
+  "parameters": {
+    "sendTo": "={{ $json.email }}",
+    "subject": "Daily Report {{ $now.format('dd/MM/yyyy') }}",
+    "emailType": "html",
+    "message": "={{ $json.htmlReport }}",
+    "options": {}
+  },
+  "credentials": {
+    "gmailOAuth2": {
+      "id": "<CREDENTIAL_ID>",
+      "name": "<CREDENTIAL_NAME>"
+    }
+  }
+}
+```
+
+## Google Drive Node
+
+```json
+{
+  "type": "n8n-nodes-base.googleDrive",
+  "typeVersion": 3,
+  "name": "Upload Report",
+  "parameters": {
+    "operation": "upload",
+    "name": "={{ $json.filename }}",
+    "folderId": "FOLDER_ID",
+    "inputDataFieldName": "data"
+  },
+  "credentials": {
+    "googleDriveOAuth2Api": {
+      "id": "<CREDENTIAL_ID>",
+      "name": "<CREDENTIAL_NAME>"
+    }
+  }
+}
+```
+
+## ⚠️ Common Mistakes
+
+| Mistake | Fix |
+|---|---|
+| Quên share Sheet với service account email | Phải add email SA làm Editor |
+| Dùng `sheetName: "gid=0"` | Dùng `sheetName: "Sheet1"` (tên tab, không phải GID) |
+| Thiếu credential trong node JSON | PHẢI có block `"credentials": { ... }` |
+| Dùng `mode: "list"` trong documentId | Dùng `mode: "id"` khi biết trước ID |
+| Quên `cellFormat: "USER_ENTERED"` | Dates/numbers sẽ không parse đúng |
+
+## GWS CLI (Alternative — cho agent trực tiếp, không qua n8n)
+
+```bash
+gws auth login --service-account /path/to/key.json
+gws sheets spreadsheets.values get --spreadsheet-id <id> --range "Sheet1!A1:Z100" --format json
+gws sheets spreadsheets.values append --spreadsheet-id <id> --range "Sheet1!A1" --values '[["new","row"]]'
 ```
