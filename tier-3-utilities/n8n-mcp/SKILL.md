@@ -29,7 +29,7 @@ related:
 | `list_workflows`     | List workflows                            | `active?`, `limit?`, `tags?`     |
 | `get_workflow`       | Get workflow details (nodes, connections) | `id`                             |
 | `create_workflow`    | Create new workflow                       | `name`, `nodes?`, `connections?` |
-| `update_workflow`    | Update existing workflow                  | `id`, `nodes?`, `connections?`   |
+| `update_workflow`    | Update existing workflow                  | `id`, `name?`★, `nodes?`, `connections?` |
 | `delete_workflow`    | Delete workflow                           | `id`                             |
 | `activate_workflow`  | Toggle active state                       | `id`, `active`                   |
 | `duplicate_workflow` | Clone workflow                            | `id`, `name?`                    |
